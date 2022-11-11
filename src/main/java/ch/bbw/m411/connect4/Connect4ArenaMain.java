@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * Plays a game of connect-4 on a 4x7 board.
+ * Plays a game of Connect Four on a 4x7 board (a variation of the original 6x7 board).
+ * The pieces fall straight down, occupying the lowest available space within the column.
  */
 public class Connect4ArenaMain {
 
@@ -162,7 +163,7 @@ public class Connect4ArenaMain {
 		}
 		@Override
 		int play() {
-			System.out.println(toPrettyString(board) + "where to to put the next " + myColor + "?");
+			System.out.println("where to to put the next " + myColor + "?");
 			var scanner = new Scanner(System.in, StandardCharsets.UTF_8);
 			return Integer.parseInt(scanner.nextLine());
 		}
