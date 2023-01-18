@@ -66,22 +66,27 @@ public class Connect4ArenaMain {
 
     public static boolean isWinning(Stone[] board, Stone forColor) {
 
+        //a loop to check for a diagonal win
         for (int i = 0; i < WIDTH; i++) {
             if (board[i] == forColor && board[i] == board[i + 7] && board[i + 7] == board[i + 14] && board[i + 14] == board[i + 21]) {
                 return true;
             }
         }
 
+        //a loop to check for a diagonal win
         for (int i = 3; i < WIDTH; i++) {
             if (board[i] == forColor && board[i] == board[i + 6] && board[i + 6] == board[i + 12] && board[i + 12] == board[i + 18])
                 return true;
         }
 
+        //a loop to check for a vertical win
         for (int i = 0; i < HEIGHT; i++) {
             if (board[i] == forColor && board[i] == board[i + 8] && board[i + 8] == board[i + 16] && board[i + 16] == board[i + 24]) {
                 return true;
             }
         }
+
+        //a loop to check for any horizontal win
         for (int i = 0; i < ALL_POSITIONS - 3; i++) {
             if ((i == 0 || i == 1 || i == 2 || i == 3 || i == 7 || i == 8 || i == 9 || i == 10 || i == 14 || i == 15 || i == 16 || i == 17 || i == 21 || i == 22 || i == 23 || i == 24) && board[i] == forColor && board[i] == board[i + 1] && board[i + 1] == board[i + 2] && board[i + 2] == board[i + 3]) {
                 return true;
@@ -98,8 +103,13 @@ public class Connect4ArenaMain {
      */
     public static ArrayList<Integer> getPossibleMoves(Stone[] board) {
         ArrayList<Integer> possibleMoves = new ArrayList<>();
+
+        //makes the player start in the middle
         int rowCount = 3;
+
+        //a loop through all rows
         for (int i = 0; i < 7; i++) {
+            //move ordering
             if (i % 2 == 0) {
                 rowCount += i;
             } else {
@@ -124,6 +134,7 @@ public class Connect4ArenaMain {
      */
     public static int evaluate(Stone myColor, Stone[] board) {
 
+        //the points for each position
         int[] points = {3, 4, 6, 7, 6, 4, 3
                 , 2, 4, 6, 7, 6, 4, 2
                 , 2, 4, 6, 7, 6, 4, 2
@@ -132,9 +143,9 @@ public class Connect4ArenaMain {
         int totalPoints = 0;
         for (int i = 0; i < ALL_POSITIONS; i++) {
             if (board[i] == myColor) {
-                totalPoints += points[i];
+                totalPoints += points[i]; //if the stone belongs to the player, add the points
             } else if (board[i] == myColor.opponent()) {
-                totalPoints -= points[i];
+                totalPoints -= points[i]; //if the stone belongs to the opponent, subtract the points
             }
         }
         return totalPoints;

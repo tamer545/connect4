@@ -6,9 +6,12 @@ import static ch.bbw.m411.connect4.Connect4ArenaMain.*;
  * A Player using the minmax algorithm
  */
 public class MinMaxPlayer extends DefaultPlayer{
-        int bestMove = NOMOVE;
 
-        int maxDepth;
+    //the best move
+    int bestMove = NOMOVE;
+
+    //the depth defined by the user
+    int maxDepth;
 
     /**
      * Constructor for the MinMaxPlayer
@@ -25,11 +28,16 @@ public class MinMaxPlayer extends DefaultPlayer{
      */
     @Override
     int play() {
+        //start a timer to check for the duration of one play
         long startTime = System.currentTimeMillis();
 
+        //start the minmax loop
         playUsingMinMax(myColor, maxDepth); // min max Player
 
+        //stop the timer
         long endTime = System.currentTimeMillis();
+
+        //print the execution time and the number of cutoffs
         System.out.println("\u001B[33m" + "Execution time: " + (endTime - startTime) + " milliseconds" + "\u001B[0m");
 
         return bestMove;
@@ -42,15 +50,19 @@ public class MinMaxPlayer extends DefaultPlayer{
      * @return min or max
      */
     private int playUsingMinMax(Connect4ArenaMain.Stone myColor, int depth) {
+        //the opponent won
         if (isWinning(board, myColor.opponent())) {
             return Integer.MIN_VALUE + 1;
         }
-
+        //evaluate the score if the depth reaches 0
         if (depth == 0) {
             return evaluate(myColor, board);
         }
-         int best = Integer.MIN_VALUE;
-            for (int move : getPossibleMoves(board)) {
+
+        int best = Integer.MIN_VALUE;
+
+        //loop through all possible moves
+        for (int move : getPossibleMoves(board)) {
                 board[move] = myColor; // play to a possible move
 
                 int currentValue = -playUsingMinMax(myColor.opponent(), depth - 1);

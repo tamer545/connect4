@@ -3,10 +3,14 @@ package ch.bbw.m411.connect4;
 import static ch.bbw.m411.connect4.Connect4ArenaMain.*;
 
 public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
+
+    //the best move
     int bestMove = NOMOVE;
 
+    //the depth defined by the user
     int maxDepth;
 
+    //number of cutoffs
     int cutOffNodeCount = 0;
 
     /**
@@ -26,12 +30,17 @@ public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
      */
     @Override
     int play() {
+        //start a timer to check for the duration of one play
         long startTime = System.currentTimeMillis();
         cutOffNodeCount = 0;
 
+        //start the alpha-beta loop
         playUsingAlphaBeta(myColor, maxDepth, -10000, 10000);
 
+        //stop the timer
         long endTime = System.currentTimeMillis();
+
+        //print the execution time and the number of cutoffs
         System.out.println("\u001B[33m" + "Execution time: " + (endTime - startTime) + " milliseconds" + "\u001B[0m");
         System.out.println("\u001B[32m" + "Cutoffs: " + cutOffNodeCount + "\u001B[0m");
 
@@ -48,16 +57,19 @@ public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
      * @return max
      */
     private int playUsingAlphaBeta(Connect4ArenaMain.Stone myColor, int depth, int alpha, int beta) {
+        //the opponent won
         if (isWinning(board, myColor.opponent())) {
             return -1000;
         }
 
+        //evaluate the score if the depth reaches 0
         if (depth == 0) {
             return evaluate(myColor, board);
         }
 
         int max = alpha;
 
+        //loop through all possible moves
         for (int move : getPossibleMoves(board)) {
             board[move] = myColor; // play to a possible move
 

@@ -62,6 +62,9 @@ class Connect4MainTest implements WithAssertions {
 		assertThat(newInstance().play(red, blue)).isSameAs(red);
 	}
 
+	/**
+	 * A game between the greedy player and the alpha-beta player
+	 */
 	@Test
 	void greedyVsAlphaBeta() {
 		var redPlayer = new AlphaBetaPlayer(8);
@@ -69,6 +72,9 @@ class Connect4MainTest implements WithAssertions {
 		assertThat(newInstance().play(redPlayer, bluePlayer)).isSameAs(redPlayer);
 	}
 
+	/**
+	 * A game between the greedy player and the minmax player
+	 */
 	@Test
 	void greedyVsMinMax() {
 		var redPlayer = new MinMaxPlayer(8);
@@ -76,6 +82,9 @@ class Connect4MainTest implements WithAssertions {
 		assertThat(newInstance().play(redPlayer, bluePlayer)).isSameAs(redPlayer);
 	}
 
+	/**
+	 * A game between a minmax and an alpha-beta player
+	 */
 	@Test
 	void minMaxVsAlphaBeta() {
 		var redPlayer = new AlphaBetaPlayer(5);
@@ -83,6 +92,10 @@ class Connect4MainTest implements WithAssertions {
 		assertThat(newInstance().play(redPlayer, bluePlayer)).isSameAs(bluePlayer);
 	}
 
+	/**
+	 * A game between two alpha-beta players
+	 * One with a depth of 5 and one with a depth of 10
+	 */
 	@Test
 	void alphaBetaVsAlphaBeta() {
 		var redPlayer = new AlphaBetaPlayer(5);
@@ -90,6 +103,10 @@ class Connect4MainTest implements WithAssertions {
 		assertThat(newInstance().play(redPlayer, bluePlayer)).isSameAs(bluePlayer);
 	}
 
+	/**
+	 * A game between two minmax players
+	 * One with a depth of 9 and one with a depth of 3
+	 */
 	@Test
 	void minMaxVsMinMax() {
 		var redPlayer = new MinMaxPlayer(9);
