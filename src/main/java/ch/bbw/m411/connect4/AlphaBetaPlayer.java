@@ -67,6 +67,11 @@ public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
             return evaluate(myColor, board);
         }
 
+        //no moves available -> its a draw
+        if (getPossibleMoves(board).size() == 0) {
+            return 0;
+        }
+
         int max = alpha;
 
         //loop through all possible moves

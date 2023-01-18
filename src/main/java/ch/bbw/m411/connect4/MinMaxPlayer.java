@@ -5,7 +5,7 @@ import static ch.bbw.m411.connect4.Connect4ArenaMain.*;
 /**
  * A Player using the minmax algorithm
  */
-public class MinMaxPlayer extends DefaultPlayer{
+public class MinMaxPlayer extends DefaultPlayer {
 
     //the best move
     int bestMove = NOMOVE;
@@ -15,15 +15,17 @@ public class MinMaxPlayer extends DefaultPlayer{
 
     /**
      * Constructor for the MinMaxPlayer
+     *
      * @param depth the depth for minmax algorithm
      */
     public MinMaxPlayer(int depth) {
-            super();
-            maxDepth = depth;
-        }
+        super();
+        maxDepth = depth;
+    }
 
     /**
      * The play method calling all the necessary functions
+     *
      * @return the best possible move
      */
     @Override
@@ -45,8 +47,9 @@ public class MinMaxPlayer extends DefaultPlayer{
 
     /**
      * MinMax Algorithm
+     *
      * @param myColor the min max Player
-     * @param depth the min max algorithm depth
+     * @param depth   the min max algorithm depth
      * @return min or max
      */
     private int playUsingMinMax(Connect4ArenaMain.Stone myColor, int depth) {
@@ -59,26 +62,31 @@ public class MinMaxPlayer extends DefaultPlayer{
             return evaluate(myColor, board);
         }
 
+        //no moves available -> its a draw
+        if (getPossibleMoves(board).size() == 0) {
+            return 0;
+        }
+
         int best = Integer.MIN_VALUE;
 
         //loop through all possible moves
         for (int move : getPossibleMoves(board)) {
-                board[move] = myColor; // play to a possible move
+            board[move] = myColor; // play to a possible move
 
-                int currentValue = -playUsingMinMax(myColor.opponent(), depth - 1);
+            int currentValue = -playUsingMinMax(myColor.opponent(), depth - 1);
 
-                board[move] = null; // undo playing
+            board[move] = null; // undo playing
 
+            if (depth == maxDepth) {
+                System.out.println("Index: " + move + " Value: " + currentValue + "\n");
+            }
+            if (currentValue > best) {
+                best = currentValue;
                 if (depth == maxDepth) {
-                    System.out.println("Index: " + move + " Value: " + currentValue + "\n");
-                }
-                if (currentValue > best) {
-                    best = currentValue;
-                    if (depth == maxDepth) {
-                        bestMove = move;
-                    }
+                    bestMove = move;
                 }
             }
-            return best;
         }
+        return best;
+    }
 }

@@ -20,7 +20,7 @@ public class Connect4ArenaMain {
     static final int ALL_POSITIONS = WIDTH * HEIGHT;
 
     public static void main(String[] args) {
-        new Connect4ArenaMain().play(new AlphaBetaPlayer(8), new HumanPlayer());
+        new Connect4ArenaMain().play(new AlphaBetaPlayer(9), new AlphaBetaPlayer(9));
     }
 
     static String toDebugString(Stone[] board) {
@@ -108,14 +108,14 @@ public class Connect4ArenaMain {
         int rowCount = 3;
 
         //a loop through all rows
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < WIDTH; i++) {
             //move ordering
             if (i % 2 == 0) {
                 rowCount += i;
             } else {
                 rowCount -= i;
             }
-            for (int j = rowCount; j < ALL_POSITIONS; j += 7) {
+            for (int j = rowCount; j < ALL_POSITIONS; j += WIDTH) {
                 if (board[j] == null) {
                     possibleMoves.add(j);
                     break;
