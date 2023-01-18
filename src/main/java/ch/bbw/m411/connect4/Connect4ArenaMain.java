@@ -20,7 +20,7 @@ public class Connect4ArenaMain {
     static final int ALL_POSITIONS = WIDTH * HEIGHT;
 
     public static void main(String[] args) {
-        new Connect4ArenaMain().play(new SmartPlayer(8), new HumanPlayer());
+        new Connect4ArenaMain().play(new AlphaBetaPlayer(8), new HumanPlayer());
     }
 
     static String toDebugString(Stone[] board) {
@@ -90,25 +90,22 @@ public class Connect4ArenaMain {
         return false;
     }
 
-    public static int countAvailableMoves(Stone[] board) {
-        int moves = 0;
-        for (int i = 0; i < ALL_POSITIONS; i++) {
-            if (board[i] == null) {
-                moves++;
-            }
-        }
-        return moves;
-    }
-
     /**
      * Looks at all the possible moves (loops through all the blocks and adds them to an array if they are still empty)
+     *
      * @param board the play board
      * @return an array of all the possible moves
      */
     public static ArrayList<Integer> getPossibleMoves(Stone[] board) {
         ArrayList<Integer> possibleMoves = new ArrayList<>();
+        int rowCount = 3;
         for (int i = 0; i < 7; i++) {
-            for (int j = i; j < ALL_POSITIONS; j += 7) {
+            if (i % 2 == 0) {
+                rowCount += i;
+            } else {
+                rowCount -= i;
+            }
+            for (int j = rowCount; j < ALL_POSITIONS; j += 7) {
                 if (board[j] == null) {
                     possibleMoves.add(j);
                     break;
@@ -120,8 +117,9 @@ public class Connect4ArenaMain {
 
     /**
      * Evaluates the score of the player
+     *
      * @param myColor the player
-     * @param board the board for the game
+     * @param board   the board for the game
      * @return totalpoints of the player
      */
     public static int evaluate(Stone myColor, Stone[] board) {
@@ -132,9 +130,11 @@ public class Connect4ArenaMain {
                 , 3, 4, 6, 7, 6, 4, 3
         };
         int totalPoints = 0;
-        for (int i = 0; i < 28; i++) {
+        for (int i = 0; i < ALL_POSITIONS; i++) {
             if (board[i] == myColor) {
                 totalPoints += points[i];
+            } else if (board[i] == myColor.opponent()) {
+                totalPoints -= points[i];
             }
         }
         return totalPoints;

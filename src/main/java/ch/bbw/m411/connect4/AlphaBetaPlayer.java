@@ -2,40 +2,49 @@ package ch.bbw.m411.connect4;
 
 import static ch.bbw.m411.connect4.Connect4ArenaMain.*;
 
-public class SmartPlayer extends Connect4ArenaMain.DefaultPlayer {
+public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
     int bestMove = NOMOVE;
 
     int maxDepth;
 
-    int minimalDepth;
+    int cutOffNodeCount = 0;
 
     /**
      * The constructor for the smart player (Alpha Beta Player)
+     *
      * @param depth The depth for the alpha beta algorithm
      */
-    public SmartPlayer(int depth) {
+    public AlphaBetaPlayer(int depth) {
         super();
         maxDepth = depth;
     }
 
     /**
      * The play method for this class, calling all the necessary functions
+     *
      * @return the best possible move
      */
     @Override
     int play() {
-        int movesAvailable = countAvailableMoves(board);
-        minimalDepth = Math.min(movesAvailable, maxDepth);
-        playUsingAlphaBeta(myColor, minimalDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        long startTime = System.currentTimeMillis();
+        cutOffNodeCount = 0;
+
+        playUsingAlphaBeta(myColor, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("\u001B[33m" + "Execution time: " + (endTime - startTime) + " milliseconds" + "\u001B[0m");
+        System.out.println("\u001B[32m" + "Cutoffs: " + cutOffNodeCount + "\u001B[0m");
+
         return bestMove;
     }
 
     /**
      * The alpha beta algorithm method
+     *
      * @param myColor the alpha beta player aka. smart player
-     * @param depth the depth of the alpha beta algorithm
-     * @param alpha the alpha value
-     * @param beta the beta value
+     * @param depth   the depth of the alpha beta algorithm
+     * @param alpha   the alpha value
+     * @param beta    the beta value
      * @return max
      */
     private int playUsingAlphaBeta(Connect4ArenaMain.Stone myColor, int depth, int alpha, int beta) {
@@ -55,18 +64,20 @@ public class SmartPlayer extends Connect4ArenaMain.DefaultPlayer {
             int currentValue = -playUsingAlphaBeta(myColor.opponent(), depth - 1, -beta, -max);
 
             board[move] = null; // undo playing
-            if (depth == minimalDepth) {
+            if (depth == maxDepth) {
                 System.out.println("Index: " + move + " Value: " + currentValue + "\n");
             }
 
             if (currentValue > max) {
                 max = currentValue;
-                if (depth == minimalDepth) {
+                if (depth == maxDepth) {
                     bestMove = move;
                 }
-                if (max >= beta) {
-                    break;
-                }
+
+            }
+            if (max >= beta) {
+                cutOffNodeCount++;
+                break; //Alpha-Beta pruning
             }
         }
         return max;

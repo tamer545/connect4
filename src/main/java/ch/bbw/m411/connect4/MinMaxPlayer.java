@@ -10,8 +10,6 @@ public class MinMaxPlayer extends DefaultPlayer{
 
         int maxDepth;
 
-        int minimalDepth;
-
     /**
      * Constructor for the MinMaxPlayer
      * @param depth the depth for minmax algorithm
@@ -27,9 +25,13 @@ public class MinMaxPlayer extends DefaultPlayer{
      */
     @Override
     int play() {
-        int movesAvailable = countAvailableMoves(board);
-        minimalDepth = Math.min(movesAvailable, maxDepth);
-        playUsingMinMax(myColor, minimalDepth);
+        long startTime = System.currentTimeMillis();
+
+        playUsingMinMax(myColor, maxDepth); // min max Player
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("\u001B[33m" + "Execution time: " + (endTime - startTime) + " milliseconds" + "\u001B[0m");
+
         return bestMove;
     }
 
@@ -47,38 +49,24 @@ public class MinMaxPlayer extends DefaultPlayer{
         if (depth == 0) {
             return evaluate(myColor, board);
         }
-
-        if (myColor == this.myColor) {
-            int max = Integer.MIN_VALUE;
+         int best = Integer.MIN_VALUE;
             for (int move : getPossibleMoves(board)) {
                 board[move] = myColor; // play to a possible move
-                int currentValue = playUsingMinMax(myColor.opponent(), depth - 1);
+
+                int currentValue = -playUsingMinMax(myColor.opponent(), depth - 1);
+
                 board[move] = null; // undo playing
-                if (depth == minimalDepth) {
+
+                if (depth == maxDepth) {
                     System.out.println("Index: " + move + " Value: " + currentValue + "\n");
                 }
-                if (currentValue > max) {
-                    max = currentValue;
-                    if (depth == minimalDepth) {
+                if (currentValue > best) {
+                    best = currentValue;
+                    if (depth == maxDepth) {
                         bestMove = move;
                     }
                 }
             }
-            return max;
-        } else {
-            int min = Integer.MAX_VALUE;
-            for (int move : getPossibleMoves(board)) {
-                board[move] = myColor; // play to a possible move
-                int currentValue = playUsingMinMax(myColor.opponent(), depth - 1);
-                board[move] = null; // undo playing
-                if (depth == minimalDepth) {
-                    System.out.println("Index: " + move + " Value: " + currentValue + "\n");
-                }
-                if (currentValue < min) {
-                    min = currentValue;
-                }
-            }
-            return min;
+            return best;
         }
-    }
 }
