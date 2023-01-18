@@ -29,7 +29,7 @@ public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
         long startTime = System.currentTimeMillis();
         cutOffNodeCount = 0;
 
-        playUsingAlphaBeta(myColor, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        playUsingAlphaBeta(myColor, maxDepth, -10000, 10000);
 
         long endTime = System.currentTimeMillis();
         System.out.println("\u001B[33m" + "Execution time: " + (endTime - startTime) + " milliseconds" + "\u001B[0m");
@@ -49,7 +49,7 @@ public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
      */
     private int playUsingAlphaBeta(Connect4ArenaMain.Stone myColor, int depth, int alpha, int beta) {
         if (isWinning(board, myColor.opponent())) {
-            return Integer.MIN_VALUE + 1;
+            return -1000;
         }
 
         if (depth == 0) {
