@@ -97,6 +97,7 @@ public class Connect4ArenaMain {
 
     /**
      * Looks at all the possible moves (loops through all the blocks and adds them to an array if they are still empty)
+     * This method uses move ordering, which lets the bot start in the best position (middle) and lets it play in the best rows.
      *
      * @param board the play board
      * @return an array of all the possible moves
@@ -130,7 +131,7 @@ public class Connect4ArenaMain {
      *
      * @param myColor the player
      * @param board   the board for the game
-     * @return totalpoints of the player
+     * @return total amount of points of the player
      */
     public static int evaluate(Stone myColor, Stone[] board) {
 

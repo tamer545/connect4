@@ -24,7 +24,7 @@ public class MinMaxPlayer extends DefaultPlayer {
     }
 
     /**
-     * The play method calling all the necessary functions
+     * The play method for this class, which starts the program and runs everything
      *
      * @return the best possible move
      */
@@ -73,7 +73,7 @@ public class MinMaxPlayer extends DefaultPlayer {
         for (int move : getPossibleMoves(board)) {
             board[move] = myColor; // play to a possible move
 
-            int currentValue = -playUsingMinMax(myColor.opponent(), depth - 1);
+            int currentValue = -playUsingMinMax(myColor.opponent(), depth - 1); //get the best value using a recursive call
 
             board[move] = null; // undo playing
 
@@ -81,9 +81,9 @@ public class MinMaxPlayer extends DefaultPlayer {
                 System.out.println("Index: " + move + " Value: " + currentValue + "\n");
             }
             if (currentValue > best) {
-                best = currentValue;
+                best = currentValue; //set the new best value
                 if (depth == maxDepth) {
-                    bestMove = move;
+                    bestMove = move; //set the new best move
                 }
             }
         }

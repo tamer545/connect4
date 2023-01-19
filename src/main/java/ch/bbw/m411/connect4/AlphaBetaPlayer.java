@@ -10,7 +10,7 @@ public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
     //the depth defined by the user
     int maxDepth;
 
-    //number of cutoffs
+    //number of cutoffs - number of nodes at which the alpha beta algorithm cancelled
     int cutOffNodeCount = 0;
 
     /**
@@ -24,7 +24,7 @@ public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
     }
 
     /**
-     * The play method for this class, calling all the necessary functions
+     * The play method for this class, which starts the program and runs everything
      *
      * @return the best possible move
      */
@@ -48,13 +48,13 @@ public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
     }
 
     /**
-     * The alpha beta algorithm method
+     * The alpha beta algorithm method which calculates the best possible move
      *
      * @param myColor the alpha beta player aka. smart player
      * @param depth   the depth of the alpha beta algorithm
-     * @param alpha   the alpha value
-     * @param beta    the beta value
-     * @return max
+     * @param alpha   min value from move
+     * @param beta    max value from move
+     * @return max    best move possible for board
      */
     private int playUsingAlphaBeta(Connect4ArenaMain.Stone myColor, int depth, int alpha, int beta) {
         //the opponent won
@@ -78,7 +78,7 @@ public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
         for (int move : getPossibleMoves(board)) {
             board[move] = myColor; // play to a possible move
 
-            int currentValue = -playUsingAlphaBeta(myColor.opponent(), depth - 1, -beta, -max);
+            int currentValue = -playUsingAlphaBeta(myColor.opponent(), depth - 1, -beta, -max); //get the best value using a recursive call
 
             board[move] = null; // undo playing
             if (depth == maxDepth) {
@@ -86,14 +86,14 @@ public class AlphaBetaPlayer extends Connect4ArenaMain.DefaultPlayer {
             }
 
             if (currentValue > max) {
-                max = currentValue;
+                max = currentValue; //set the new best value
                 if (depth == maxDepth) {
-                    bestMove = move;
+                    bestMove = move; //set the new best move
                 }
 
             }
             if (max >= beta) {
-                cutOffNodeCount++;
+                cutOffNodeCount++; //increase the number of nodes, at which the alpha beta cut off
                 break; //Alpha-Beta pruning
             }
         }
