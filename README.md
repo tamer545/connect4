@@ -16,4 +16,5 @@ Es hat lange gedauert, bis ich den Alpha Beta Player zum laufen gekriegt habe, d
 ## Selbsteinschätzung
 
 Ich würde mir selbst ca. die Note 5 geben, da ich mir bei diesem Projekt sehr viel Mühe gegeben habe und auch noch Freizeit darin investiert habe. Ich habe die Mindestanforderungen übertroffen und dazu noch weitere Funktionalitäten wie oben genannt eingebaut, wie zum Beispiel den Timer, die Anzahl an Cut-Off Nodes, den Alpha Beta Player und das Move Ordering.
+Der Alpha Beta player hat eine gute Performance und ist sehr schnell. Man hätte ihn noch ein bisschen verbessern können mit zum Beispiel einem BitBoard oder Caching, falls mehr Zeit gewesen wäre.
 
